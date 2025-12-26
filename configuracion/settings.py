@@ -129,3 +129,8 @@ LANGUAGE_CODE = 'es-bo'
 TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
+# ESTO ES UN TRUCO TEMPORAL PARA CREAR TU USUARIO EN RENDER GRATIS
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin_yanio').exists():
+    User.objects.create_superuser('admin_yanio', 'tu_correo@ejemplo.com', 'Bolivia2025*')
