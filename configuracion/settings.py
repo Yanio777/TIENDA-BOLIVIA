@@ -114,7 +114,18 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+STATIC_URL = 'static/'
 
 import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Solo si tienes una carpeta 'static' en tu proyecto
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Configuración de Bolivia
+LANGUAGE_CODE = 'es-bo'
+TIME_ZONE = 'America/La_Paz'
+USE_I18N = True
+USE_TZ = True
