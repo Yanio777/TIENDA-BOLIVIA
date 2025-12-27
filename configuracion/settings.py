@@ -69,13 +69,16 @@ USE_I18N = True
 USE_TZ = True
 
 # Estáticos configurados para Render
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Solo si tienes una carpeta 'static' en tu proyecto local
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# Solo si tienes una carpeta 'static' en la raíz de tu proyecto local
+if os.path.exists(os.path.join(BASE_DIR, 'static')):
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Almacenamiento optimizado de WhiteNoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Configuración moderna de WhiteNoise (Esto es lo que fallaba)
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
