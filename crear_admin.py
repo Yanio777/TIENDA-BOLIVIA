@@ -1,6 +1,7 @@
 import os
 import django
 
+# Configuración del entorno de Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'configuracion.settings')
 django.setup()
 
@@ -16,4 +17,4 @@ if not User.objects.filter(username=username).exists():
     User.objects.create_superuser(username, email, password)
     print("Superusuario creado con éxito.")
 else:
-    print(f"El usuario {username} ya existe."
+    print(f"El usuario {username} ya existe.")
