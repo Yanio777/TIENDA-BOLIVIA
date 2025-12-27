@@ -15,9 +15,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalogo', 
+    'cloudinary_storage', # <--- AGREGA ESTA
+    'cloudinary',         # <--- AGREGA ESTA
+    'catalogo',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Entrega archivos estáticos
@@ -77,15 +78,26 @@ if os.path.exists(os.path.join(BASE_DIR, 'static')):
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Configuración moderna de WhiteNoise (Esto es lo que fallaba)
+# --- CONFIGURACIÓN DE ALMACENAMIENTO (ESTÁTICOS Y NUBE) ---
+
 STORAGES = {
+    # WhiteNoise se encarga del diseño (CSS/JS) para que la tienda sea rápida
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
+    # Cloudinary se encarga de las fotos de tus artesanías para que sean eternas
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 }
 
-# Configuración de Archivos Multimedia (Fotos de productos)
+# Credenciales de Cloudinary (¡Cámbialas por tus llaves reales!)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dbe8judc6', 
+    'API_KEY': '957824476582826',           
+    'API_SECRET': '**********'      
+}
+
+# Rutas para archivos multimedia
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

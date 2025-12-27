@@ -1,19 +1,15 @@
 from django.db import models
+# Esta línea es la nueva herramienta para conectar con la nube
+from cloudinary.models import CloudinaryField
 
 class ProductoBoliviano(models.Model):
-    CATEGORIAS = [
-        ('TEXTIL', 'Chompas y Textiles'),
-        ('PIEDRA', 'Piedras y Minerales (Bolivianita, etc.)'),
-        ('UTENSILIO', 'Urupé y Utensilios Tradicionales'),
-        ('CULINARIA', 'Gastronomía Típica'),
-    ]
-
-    nombre = models.CharField(max_length=200)
-    categoria = models.CharField(max_length=20, choices=CATEGORIAS)
+    nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    imagen = models.ImageField(upload_to='productos/', null=True, blank=True) # Para tus fotos
-    stock = models.IntegerField()
+    
+    # Aquí es donde estaba el cambio: 
+    # Antes decía models.ImageField, ahora usamos CloudinaryField
+    imagen = CloudinaryField('imagen') 
 
     def __str__(self):
-        return f"{self.nombre} - {self.categoria}"
+        return self.nombre
