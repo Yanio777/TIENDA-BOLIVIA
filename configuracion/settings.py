@@ -1,19 +1,15 @@
-API_KEY': '957824476582826',           
-    'API_SECRET': '**********'      
-}
-
-# Rutas para archivos multimedia
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'import os
+import os
 from pathlib import Path
 
+# 1. Rutas Básicas
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 2. Seguridad (DEBUG debe estar en True para ver errores ahora)
 SECRET_KEY = 'django-insecure-&x!5^r181!rm%@4@l*#091xp7#3!%flj@v2l5vf*_d-wf68+7o'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-# Application definition
+# 3. Aplicaciones Instaladas
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,13 +17,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage', # <--- AGREGA ESTA
-    'cloudinary',         # <--- AGREGA ESTA
+    'cloudinary_storage',
+    'cloudinary',
     'catalogo',
 ]
+
+# 4. Middleware (Incluye WhiteNoise para archivos estáticos)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Entrega archivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,12 +53,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configuracion.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# 5. Base de Datos (SQLite para esta fase)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -68,28 +61,18 @@ DATABASES = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-# Configuración de Bolivia
+# 6. Internacionalización (Bolivia)
 LANGUAGE_CODE = 'es-bo'
 TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# Estáticos configurados para Render
+# 7. Archivos Estáticos (Render)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-if os.path.exists(os.path.join(BASE_DIR, 'static')):
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-# --- CONFIGURACIÓN DE ALMACENAMIENTO ---
-
+# 8. CONFIGURACIÓN DE ALMACENAMIENTO (Cloudinary)
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -99,12 +82,22 @@ STORAGES = {
     },
 }
 
-# Credenciales protegidas (Leen de las variables que pusiste en Render)
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dbe8judc6'), 
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '957824476582826'),           
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'TU_SECRET_AQUI')      
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+# 9. Multimedia
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# 10. Validadores de contraseña
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
