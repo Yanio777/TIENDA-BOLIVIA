@@ -1,8 +1,7 @@
 import os
 from pathlib import Path
-import cloudinary
 
-# 1. Rutas Básicas
+# 1. Rutas
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 2. Seguridad
@@ -10,7 +9,7 @@ SECRET_KEY = 'django-insecure-&x!5^r181!rm%@4@l*#091xp7#3!%flj@v2l5vf*_d-wf68+7o
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-# 3. Aplicaciones Instaladas
+# 3. Aplicaciones
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,20 +61,18 @@ DATABASES = {
     }
 }
 
-# 6. Internacionalización (Bolivia)
+# 6. Bolivia
 LANGUAGE_CODE = 'es-bo'
 TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Archivos Estáticos
+# 7. Estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-if not os.path.exists(os.path.join(BASE_DIR, 'static')):
-    os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. CONFIGURACIÓN DE ALMACENAMIENTO (Cloudinary)
+# 8. Almacenamiento (Cloudinary)
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
@@ -93,7 +90,7 @@ STORAGES = {
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# 10. Validadores de contraseña e ID
+# 10. Final
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
