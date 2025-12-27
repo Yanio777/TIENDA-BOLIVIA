@@ -1,10 +1,11 @@
 import os
 from pathlib import Path
+import cloudinary
 
 # 1. Rutas Básicas
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 2. Seguridad (DEBUG debe estar en True para ver errores ahora)
+# 2. Seguridad
 SECRET_KEY = 'django-insecure-&x!5^r181!rm%@4@l*#091xp7#3!%flj@v2l5vf*_d-wf68+7o'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
@@ -22,7 +23,7 @@ INSTALLED_APPS = [
     'catalogo',
 ]
 
-# 4. Middleware (Incluye WhiteNoise para archivos estáticos)
+# 4. Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -53,7 +54,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configuracion.wsgi.application'
 
-# 5. Base de Datos (SQLite para esta fase)
+# 5. Base de Datos
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -67,12 +68,18 @@ TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Archivos Estáticos (Render)
+# 7. Archivos Estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
+if not os.path.exists(os.path.join(BASE_DIR, 'static')):
+    os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # 8. CONFIGURACIÓN DE ALMACENAMIENTO (Cloudinary)
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+}
+
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -82,17 +89,11 @@ STORAGES = {
     },
 }
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
 # 9. Multimedia
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# 10. Validadores de contraseña
+# 10. Validadores de contraseña e ID
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
