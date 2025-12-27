@@ -1,4 +1,10 @@
-import os
+API_KEY': '957824476582826',           
+    'API_SECRET': '**********'      
+}
+
+# Rutas para archivos multimedia
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +61,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -73,31 +85,26 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Solo si tienes una carpeta 'static' en la raíz de tu proyecto local
 if os.path.exists(os.path.join(BASE_DIR, 'static')):
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Configuración moderna de WhiteNoise (Esto es lo que fallaba)
-# --- CONFIGURACIÓN DE ALMACENAMIENTO (ESTÁTICOS Y NUBE) ---
+# --- CONFIGURACIÓN DE ALMACENAMIENTO ---
 
 STORAGES = {
-    # WhiteNoise se encarga del diseño (CSS/JS) para que la tienda sea rápida
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
-    # Cloudinary se encarga de las fotos de tus artesanías para que sean eternas
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 }
 
-# Credenciales de Cloudinary (¡Cámbialas por tus llaves reales!)
+# Credenciales protegidas (Leen de las variables que pusiste en Render)
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dbe8judc6', 
-    'API_KEY': '957824476582826',           
-    'API_SECRET': '**********'      
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dbe8judc6'), 
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '957824476582826'),           
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'TU_SECRET_AQUI')      
 }
 
-# Rutas para archivos multimedia
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
