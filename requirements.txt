@@ -1,7 +1,5 @@
 django
-gunicorn
-whitenoise
 cloudinary
 django-cloudinary-storage
-pillow
-requests
+whitenoise
+gunicorn
