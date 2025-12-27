@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import cloudinary
 
 # 1. Rutas
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,7 +73,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. Almacenamiento (Cloudinary)
+# 8. Almacenamiento
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
@@ -90,7 +91,7 @@ STORAGES = {
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# 10. Final
+# 10. Validadores
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
