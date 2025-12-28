@@ -1,7 +1,9 @@
 import os
-import dj_database_url  # <--- ESTA LÍNEA ES VITAL PARA EL PUNTO 5
+import dj_database_url  
 from pathlib import Path
 import cloudinary
+import cloudinary.uploader # <-- AÑADIMOS ESTO PARA QUE FUNCIONE EL SUBIDOR
+import cloudinary.api
 
 # 1. Rutas
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,14 +15,14 @@ ALLOWED_HOSTS = ['*']
 
 # 3. Aplicaciones
 INSTALLED_APPS = [
+    'cloudinary_storage', # Primero el almacenamiento
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
+    'cloudinary',         # Luego la librería base
     'catalogo',
 ]
 
@@ -55,8 +57,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configuracion.wsgi.application'
 
-# 5. Base de Datos (Configuración Robusta con PostgreSQL)
-# RECUERDA: Cambia la URL de abajo por la "Internal Database URL" que te dio Render
+# 5. Base de Datos (PostgreSQL - YA ESTÁ TU URL CORRECTA)
 DATABASES = {
     'default': dj_database_url.config(
         default='postgresql://tienda_bolivia_db_user:qQaUj0UzRBwyf64J92nQLHP5BomddB92@dpg-d58c37e3jp1c73be2jmg-a/tienda_bolivia_db', 
@@ -64,23 +65,31 @@ DATABASES = {
     )
 }
 
-# 6. Configuración Regional (Bolivia)
+# 6. Configuración Regional
 LANGUAGE_CODE = 'es-bo'
 TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Archivos Estáticos (CSS, JS)
+# 7. Estáticos
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. Almacenamiento (Cloudinary)
+# 8. Almacenamiento (CORRECCIÓN CLAVE)
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dbe8judc6',
     'API_KEY': '957824476582826',
     'API_SECRET': '-aujiF39lV11mpFo_lhBHMJQknc',
 }
+
+# CONFIGURACIÓN MANUAL PARA ASEGURAR LA CONEXIÓN
+cloudinary.config(
+    cloud_name = 'dbe8judc6',
+    api_key = '957824476582826',
+    api_secret = '-aujiF39lV11mpFo_lhBHMJQknc',
+    secure = True
+)
 
 STORAGES = {
     "staticfiles": {
@@ -94,7 +103,7 @@ STORAGES = {
 # 9. Multimedia
 MEDIA_URL = '/media/'
 
-# 10. Validadores y otros
+# 10. Validadores
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
