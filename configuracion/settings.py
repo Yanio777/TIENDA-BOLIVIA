@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
+    'cloudinary_storage', # Debe ir antes de 'cloudinary'
     'cloudinary',
     'catalogo',
 ]
@@ -62,23 +62,25 @@ DATABASES = {
     }
 }
 
-# 6. Bolivia
+# 6. Configuración Regional (Bolivia)
 LANGUAGE_CODE = 'es-bo'
 TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Estáticos
+# 7. Archivos Estáticos (CSS, JS)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. Almacenamiento (Poniendo las claves directo)
+# 8. Almacenamiento (Cloudinary Configurado Directamente)
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dbe8judc6',
     'API_KEY': '957824476582826',
-    'API_SECRET': '-aujiF39lV11mpFo_lhBHMJQknc', # <--- Entre comillas
+    'API_SECRET': '-aujiF39lV11mpFo_lhBHMJQknc',
 }
+
+# Esta es la forma correcta para Django 6
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -90,9 +92,9 @@ STORAGES = {
 
 # 9. Multimedia
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Nota: Eliminamos DEFAULT_FILE_STORAGE porque ya está configurado en STORAGES arriba.
 
-# 10. Validadores
+# 10. Validadores y otros
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
