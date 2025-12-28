@@ -1,4 +1,5 @@
 import os
+import dj_database_url  # <--- ESTA LÍNEA ES VITAL PARA EL PUNTO 5
 from pathlib import Path
 import cloudinary
 
@@ -18,7 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage', # Debe ir antes de 'cloudinary'
+    'cloudinary_storage',
     'cloudinary',
     'catalogo',
 ]
@@ -54,12 +55,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'configuracion.wsgi.application'
 
-# 5. Base de Datos
+# 5. Base de Datos (Configuración Robusta con PostgreSQL)
+# RECUERDA: Cambia la URL de abajo por la "Internal Database URL" que te dio Render
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://tienda_bolivia_db_user:qQaUj0UzRBwyf64J92nQLHP5BomddB92@dpg-d58c37e3jp1c73be2jmg-a/tienda_bolivia_db', 
+        conn_max_age=600
+    )
 }
 
 # 6. Configuración Regional (Bolivia)
@@ -73,14 +75,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. Almacenamiento (Cloudinary Configurado Directamente)
+# 8. Almacenamiento (Cloudinary)
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dbe8judc6',
     'API_KEY': '957824476582826',
     'API_SECRET': '-aujiF39lV11mpFo_lhBHMJQknc',
 }
 
-# Esta es la forma correcta para Django 6
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -92,7 +93,6 @@ STORAGES = {
 
 # 9. Multimedia
 MEDIA_URL = '/media/'
-# Nota: Eliminamos DEFAULT_FILE_STORAGE porque ya está configurado en STORAGES arriba.
 
 # 10. Validadores y otros
 AUTH_PASSWORD_VALIDATORS = [
