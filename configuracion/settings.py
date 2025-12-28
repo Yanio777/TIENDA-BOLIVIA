@@ -73,11 +73,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
 
-# 8. Almacenamiento
+# 8. Almacenamiento (Poniendo las claves directo)
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': 'dbe8judc6',
+    'API_KEY': '957824476582826',
+    'API_SECRET': '-aujiF39lV11mpFo_lhBHMJQknc', # <--- Entre comillas
 }
 STORAGES = {
     "staticfiles": {
