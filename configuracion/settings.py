@@ -71,11 +71,12 @@ TIME_ZONE = 'America/La_Paz'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Estáticos
+# 7. Archivos Estáticos (CSS, JS, Robots)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # 8. Almacenamiento (CORRECCIÓN CLAVE)
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dbe8judc6',
